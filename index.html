@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Who is the Best Student?</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      color: #333;
+    }
+
+    .game {
+      text-align: center;
+      background: rgba(255,255,255,0.85);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      backdrop-filter: blur(5px);
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: #b91c1c;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+    }
+
+    button {
+      font-size: 18px;
+      font-weight: bold;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: linear-gradient(135deg, #f9a8d4, #ec4899);
+      color: #1f2937;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+      position: relative;
+    }
+
+    button:hover {
+      transform: scale(1.08);
+      background: linear-gradient(135deg, #f472b6, #db2777);
+      color: white;
+    }
+
+    #medal-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .medal {
+      margin-top: 30px;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffe4e6, #fb7185);
+      border: 6px solid #f43f5e;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #7f1d1d;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      text-shadow: 1px 1px 2px rgba(255,255,255,0.9);
+      animation: shine 3s linear infinite;
+    }
+
+    @keyframes shine {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .confetti {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .piece {
+      position: absolute;
+      width: 10px; height: 14px;
+      opacity: 0.8;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); }
+      100% { transform: translateY(110vh) rotate(720deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="game" id="main-game">
+    <h1>Who is the Best Student in the World? 🤔</h1>
+    <div class="buttons">
+      <button id="melahat">Melahat</button>
+      <button id="other">Someone Else</button>
+    </div>
+  </div>
+
+  <div id="medal-screen">
+    <h1>🏅 Congratulations! 🏅</h1>
+    <p style="font-size: 1.2em; color:#4b5563;">You are officially crowned as...</p>
+    <div class="medal">💖<br>THE BEST<br>ENGLISH STUDENT<br>IN THE WORLD! 💖</div>
+  </div>
+
+  <div class="confetti" id="confetti"></div>
+
+  <script>
+    const melahatBtn = document.getElementById('melahat');
+    const otherBtn = document.getElementById('other');
+    const game = document.getElementById('main-game');
+    const medalScreen = document.getElementById('medal-screen');
+
+    otherBtn.addEventListener('click', moveButton);
+
+    function moveButton() {
+      const x = Math.random() * (window.innerWidth - 120);
+      const y = Math.random() * (window.innerHeight - 80);
+      otherBtn.style.position = 'absolute';
+      otherBtn.style.left = x + 'px';
+      otherBtn.style.top = y + 'px';
+    }
+
+    melahatBtn.addEventListener('click', () => {
+      game.style.display = 'none';
+      medalScreen.style.display = 'flex';
+      popConfetti(200);
+    });
+
+    function popConfetti(n = 150) {
+      const c = document.getElementById('confetti');
+      for (let i = 0; i < n; i++) {
+        const p = document.createElement('div');
+        p.className = 'piece';
+        const left = Math.random() * 100;
+        const size = 6 + Math.random() * 8;
+        const dur = 2 + Math.random() * 3;
+        const delay = Math.random() * 0.5;
+        p.style.left = left + 'vw';
+        p.style.width = size + 'px';
+        p.style.height = (size * 1.4) + 'px';
+        p.style.background = `hsl(${Math.random() * 360}, 90%, 70%)`;
+        p.style.animationDuration = dur + 's';
+        p.style.animationDelay = delay + 's';
+        c.appendChild(p);
+        setTimeout(() => p.remove(), (dur + 1) * 1000);
+      }
+    }
+  </script>
+</body>
+</html>
